@@ -21,16 +21,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(0),
-	Run: func(cmd *cobra.Command, args []string) {
-		items := AxisUniverse.List()
-		printItems(items)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		entries, err := AxisUniverse.List()
+		if err != nil {
+			return err
+		}
+		PrintEntries(entries)
+		return err
 	},
 }
 
-func printItems(items []AxisUniverse.AxisUniverse) {
+func PrintEntries(entries []AxisUniverse.AxisUniverse) {
 	fmt.Println("Universe\t\tDescription")
 	fmt.Println("--------\t\t-----------")
-	for _, universe := range items {
+	for _, universe := range entries {
 		fmt.Println(universe.Name, "\t\t", universe.Description)
 	}
 }

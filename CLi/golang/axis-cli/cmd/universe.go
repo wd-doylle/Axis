@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -26,6 +25,8 @@ func init() {
 	universeCmd.AddCommand(universe.CreateCmd)
 	universeCmd.AddCommand(universe.ListCmd)
 	universeCmd.AddCommand(universe.ShowCmd)
+	universeCmd.AddCommand(universe.DeleteCmd)
+	universeCmd.AddCommand(universe.UpdateCmd)
 
 	rootCmd.AddCommand(universeCmd)
 

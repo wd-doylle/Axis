@@ -1,14 +1,15 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package universe
 
 import (
-	"fmt"
+	"axis-cli/data/AxisUniverse"
 
 	"github.com/spf13/cobra"
 )
+
+var isForce bool
 
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
@@ -20,7 +21,13 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+	Args: cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		err := AxisUniverse.Delete(args[0])
+		return err
 	},
+}
+
+func init() {
+	DeleteCmd.Flags().BoolVarP(&isForce, "force", "f", false, "Force delete")
 }

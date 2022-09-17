@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -15,9 +16,14 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	axisDir := filepath.Join(homeDir, ".axis")
-	os.MkdirAll(axisDir, os.ModePerm)
-	Db, err = gorm.Open(sqlite.Open(filepath.Join(axisDir, "axis.db")), &gorm.Config{})
+	axisHome := filepath.Join(homeDir, ".axis")
+	if os.Getenv("AXIS_HOME") != "" {
+		axisHome = os.Getenv("AXIS_HOME")
+	}
+	os.MkdirAll(axisHome, os.ModePerm)
+	Db, err = gorm.Open(sqlite.Open(filepath.Join(axisHome, "axis.db")), &gorm.Config{
+		// Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		panic("failed to connect database")
 	}

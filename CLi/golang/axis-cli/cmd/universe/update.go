@@ -1,14 +1,15 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package universe
 
 import (
-	"fmt"
+	"axis-cli/data/AxisUniverse"
 
 	"github.com/spf13/cobra"
 )
+
+var newName, newDescription string
 
 // UpdateCmd represents the create command
 var UpdateCmd = &cobra.Command{
@@ -20,7 +21,13 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update called")
+	RunE: func(cmd *cobra.Command, args []string) error {
+		err := AxisUniverse.Update(args[0], newName, newDescription)
+		return err
 	},
+}
+
+func init() {
+	UpdateCmd.Flags().StringVar(&newName, "name", "", "New name for the universe")
+	UpdateCmd.Flags().StringVarP(&newDescription, "description", "d", "", "New description for the universe")
 }

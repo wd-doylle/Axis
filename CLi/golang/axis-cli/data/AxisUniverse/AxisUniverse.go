@@ -8,40 +8,58 @@ import (
 
 type AxisUniverse struct {
 	gorm.Model
-	Name        string
+	ID          uint64 `gorm:"primaryKey"`
+	Name        string `gorm:"uniqueIndex"`
 	Description string
 }
 
-func Create(name string, description string) {
+func Create(name string, description string) error {
 	// Create
-	data.Db.Create(&AxisUniverse{Name: name, Description: description})
+	result := data.Db.Create(&AxisUniverse{Name: name, Description: description})
+	return result.Error
 }
 
-func List() []AxisUniverse {
+func List() ([]AxisUniverse, error) {
 	// Read
 	var universes []AxisUniverse
-	data.Db.Limit(10).Find(&universes)
-	return universes
-	// db.First(&universe, 1) // find product with integer primary key
-	// db.First(&universe, "code = ?", "D42") // find product with code D42
+	result := data.Db.Limit(10).Find(&universes)
+	return universes, result.Error
 }
 
-func Update() {
-	// var universe AxisUniverse
-	// db.First(&universe, 1) // find product with integer primary key
-	// // Update - update product's price to 200
-	// db.Model(&universe).Update("Price", 200)
-	// // Update - update multiple fields
-	// db.Model(&universe).Updates(AxisUniverse{Price: 200, Code: "F42"}) // non-zero fields
-	// db.Model(&universe).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
+func Find(name string) (AxisUniverse, error) {
+	// Read
+	var universe AxisUniverse
+	result := data.Db.First(&universe, "name = ?", name)
+	return universe, result.Error
 }
 
-func Delte() {
-	// var universe AxisUniverse
-	// db.First(&universe, 1) // find product with integer primary key
-	// // Delete - delete product
-	// db.Delete(&universe, 1)
+func Update(name string, newName string, newDescription string) error {
+	var universe AxisUniverse
+	result := data.Db.First(&universe, "name = ?", name)
+	if newName != "" {
+		universe.Name = newName
+	}
+	if newDescription != "" {
+		universe.Description = newDescription
+	}
+	// data.Db.Model(&universe).Updates(universe)
+	data.Db.Save(&universe)
+	return result.Error
 }
+
+func Delete(name string) error {
+	var universe AxisUniverse
+	result := data.Db.First(&universe, "name = ?", name)
+	data.Db.Delete(&universe)
+	return result.Error
+}
+
+// func (u *AxisUniverse) BeforeDelete(tx *gorm.DB) (err error) {
+// 	if u.Role == "admin" {
+// 		return errors.New("admin user not allowed to delete")
+// 	}
+// 	return
+// }
 
 func init() {
 	// Migrate the schema
