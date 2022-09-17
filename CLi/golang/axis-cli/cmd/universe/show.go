@@ -4,6 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package universe
 
 import (
+	"axis-cli/data"
 	"axis-cli/data/AxisUniverse"
 
 	"github.com/spf13/cobra"
@@ -21,11 +22,11 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		entry, err := AxisUniverse.Find(args[0])
+		entry, err := AxisUniverse.FindToMap(args[0])
 		if err != nil {
 			return err
 		}
-		PrintEntries([]AxisUniverse.AxisUniverse{entry})
+		data.PrintMapEntries([]map[string]interface{}{entry}, []string{"id", "name", "description"})
 		return err
 	},
 }

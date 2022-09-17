@@ -26,6 +26,13 @@ func List() ([]AxisUniverse, error) {
 	return universes, result.Error
 }
 
+func ListToMap() ([]map[string]interface{}, error) {
+	// Read
+	var universeMaps []map[string]interface{}
+	result := data.Db.Limit(10).Find(&universeMaps)
+	return universeMaps, result.Error
+}
+
 func Find(name string) (AxisUniverse, error) {
 	// Read
 	var universe AxisUniverse
@@ -33,9 +40,16 @@ func Find(name string) (AxisUniverse, error) {
 	return universe, result.Error
 }
 
+func FindToMap(name string) (map[string]interface{}, error) {
+	// Read
+	var universeMap map[string]interface{}
+	result := data.Db.Model(&AxisUniverse{}).First(&universeMap, "name = ?", name)
+	return universeMap, result.Error
+}
+
 func Update(name string, newName string, newDescription string) error {
 	var universe AxisUniverse
-	result := data.Db.First(&universe, "name = ?", name)
+	result := data.Db.Model(&AxisUniverse{}).First(&universe, "name = ?", name)
 	if newName != "" {
 		universe.Name = newName
 	}
