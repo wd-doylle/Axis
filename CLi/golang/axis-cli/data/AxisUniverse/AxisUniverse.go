@@ -22,21 +22,21 @@ func Create(name string, description string) error {
 func List() ([]AxisUniverse, error) {
 	// Read
 	var universes []AxisUniverse
-	result := data.Db.Limit(10).Find(&universes)
+	result := data.Db.Model(&AxisUniverse{}).Limit(10).Find(&universes)
 	return universes, result.Error
 }
 
 func ListToMap() ([]map[string]interface{}, error) {
 	// Read
 	var universeMaps []map[string]interface{}
-	result := data.Db.Limit(10).Find(&universeMaps)
+	result := data.Db.Model(&AxisUniverse{}).Limit(10).Find(&universeMaps)
 	return universeMaps, result.Error
 }
 
 func Find(name string) (AxisUniverse, error) {
 	// Read
 	var universe AxisUniverse
-	result := data.Db.First(&universe, "name = ?", name)
+	result := data.Db.Model(&AxisUniverse{}).First(&universe, "name = ?", name)
 	return universe, result.Error
 }
 
@@ -62,6 +62,7 @@ func Update(name string, newName string, newDescription string) error {
 }
 
 func Delete(name string) error {
+	// TODO: fail when deleting non-empty universe
 	var universe AxisUniverse
 	result := data.Db.First(&universe, "name = ?", name)
 	data.Db.Delete(&universe)

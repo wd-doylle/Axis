@@ -11,7 +11,7 @@ import (
 )
 
 // listCmd represents the list command
-var ListCmd = &cobra.Command{
+var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -26,11 +26,11 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			return err
 		}
-		data.PrintMapEntries(entries, []string{"id", "title", "description", "universe_id", "priority", "created_at", "time_due", "status"})
+		data.PrintMapEntries(entries, fieldsToPrint)
 		return err
 	},
 }
 
 func init() {
-
+	ItemCmd.AddCommand(listCmd)
 }

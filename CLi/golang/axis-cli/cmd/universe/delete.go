@@ -11,8 +11,8 @@ import (
 
 var isForce bool
 
-// DeleteCmd represents the delete command
-var DeleteCmd = &cobra.Command{
+// deleteCmd represents the delete command
+var deleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -29,5 +29,6 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	DeleteCmd.Flags().BoolVarP(&isForce, "force", "f", false, "Force delete")
+	deleteCmd.Flags().BoolVarP(&isForce, "force", "f", false, "Force delete")
+	UniverseCmd.AddCommand(deleteCmd)
 }

@@ -12,7 +12,7 @@ import (
 var description string
 
 // createCmd represents the create command
-var CreateCmd = &cobra.Command{
+var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -29,5 +29,5 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	CreateCmd.Flags().StringVarP(&description, "description", "d", "", "An optional description of the universe")
+	createCmd.Flags().StringVarP(&description, "description", "d", "", "An optional description of the universe")
 }

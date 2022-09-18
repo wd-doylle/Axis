@@ -11,7 +11,7 @@ import (
 )
 
 // showCmd represents the show command
-var ShowCmd = &cobra.Command{
+var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -26,7 +26,7 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			return err
 		}
-		data.PrintMapEntries([]map[string]interface{}{entry}, []string{"id", "name", "description"})
+		data.PrintMapEntries([]map[string]interface{}{entry}, fieldsToPrint)
 		return err
 	},
 }

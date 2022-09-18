@@ -11,8 +11,8 @@ import (
 
 var newName, newDescription string
 
-// UpdateCmd represents the create command
-var UpdateCmd = &cobra.Command{
+// updateCmd represents the create command
+var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -28,6 +28,6 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	UpdateCmd.Flags().StringVar(&newName, "name", "", "New name for the universe")
-	UpdateCmd.Flags().StringVarP(&newDescription, "description", "d", "", "New description for the universe")
+	updateCmd.Flags().StringVar(&newName, "name", "", "New name for the universe")
+	updateCmd.Flags().StringVarP(&newDescription, "description", "d", "", "New description for the universe")
 }

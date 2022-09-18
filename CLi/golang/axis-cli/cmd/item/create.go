@@ -13,12 +13,12 @@ import (
 var (
 	description  string
 	priority     uint8
-	durationDue  time.Duration
+	timeDueStr   string
 	universeName string
 )
 
 // createCmd represents the create command
-var CreateCmd = &cobra.Command{
+var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -29,16 +29,29 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		timeDue := time.Now().Add(durationDue)
-		err := AxisItem.Create(args[0], description, priority, timeDue, universeName)
+		var (
+			timeDue time.Time
+			err     error
+		)
+		if timeDueStr == "" {
+			timeDue = time.Now()
+			err = nil
+		} else {
+			timeDue, err = time.Parse("2006-01-02 15:04:05 -0700", timeDueStr)
+		}
+		if err != nil {
+			return err
+		}
+		err = AxisItem.Create(args[0], description, priority, timeDue, universeName, "New")
 		return err
 	},
 }
 
 func init() {
-	CreateCmd.Flags().StringVarP(&description, "description", "d", "", "An optional description of the item")
-	CreateCmd.Flags().Uint8VarP(&priority, "priority", "p", 0, "Priority of the item")
-	CreateCmd.Flags().DurationVar(&durationDue, "due", 0, "Due time of the item")
-	CreateCmd.Flags().StringVarP(&universeName, "universe", "u", "", "Universe that the item belongs to")
-	CreateCmd.MarkFlagRequired("universe")
+	createCmd.Flags().StringVarP(&description, "description", "d", "", "An optional description of the item")
+	createCmd.Flags().Uint8VarP(&priority, "priority", "p", 0, "Priority of the item")
+	createCmd.Flags().StringVar(&timeDueStr, "due", "", "Due time of the item")
+	createCmd.Flags().StringVarP(&universeName, "universe", "u", "", "Universe that the item belongs to")
+	createCmd.MarkFlagRequired("universe")
+	ItemCmd.AddCommand(createCmd)
 }
