@@ -1,3 +1,3 @@
 # !/usr/bin/sh
 
-env AXIS_BINARY_PATH=/Users/duowang/Axis/CLi/golang/axis-cli/axis-cli  ~/Axis/CLi/test/bats/bin/bats ~/Axis/CLi/test/*.bats
+env AXIS_BINARY_PATH=$(pwd)/axis-cli  ~/Axis/CLi/test/bats/bin/bats ~/Axis/CLi/test/*.bats
